@@ -22,66 +22,63 @@ final class Response extends Enum
     const HTTP_INTERNAL_SERVER_ERROR        = 500;
     const HTTP_SERVICE_UNAVAILABLE          = 503;
 
-    // const statusCodes = [
-    //     200 => 'SUCCESS',
-    //     201 => 'CREATED',
-    //     202 => 'ACCEPTED',
-    //     204 => 'CONTENT',
-    //     400 => 'BAD_REQUEST',
-    //     401 => 'UNAUTHORIZED',
-    //     403 => 'FORBIDDEN',
-    //     404 => 'NOT_FOUND',
-    //     409 => 'CONFLICT',
-    //     422 => 'VALIDATION_ERROR',
-    //     429 => 'RATE_LIMIT',
-    //     500 => 'INTERNAL_SERVER_ERROR',
-    //     503 => 'SERVICE_UNAVAILABLE',
-    // ];
+    const statusCodes = [
+        200 => 'SUCCESS',
+        201 => 'CREATED',
+        202 => 'ACCEPTED',
+        204 => 'CONTENT',
+        400 => 'BAD_REQUEST',
+        401 => 'UNAUTHORIZED',
+        403 => 'FORBIDDEN',
+        404 => 'NOT_FOUND',
+        409 => 'CONFLICT',
+        422 => 'VALIDATION_ERROR',
+        429 => 'RATE_LIMIT',
+        500 => 'INTERNAL_SERVER_ERROR',
+        503 => 'SERVICE_UNAVAILABLE',
+    ];
 
-    // private $statusCode;
+    private $statusCode;
 
-    // public function __construct(int $statusCode = 200, $message = null)
-    // {
-    //     $this->setStatusCode($statusCode, $message);
-    // }
+    public function __construct(int $httpCode = 200, $message = null)
+    {
+        $this->setStatusCode($httpCode, $message);
+    }
 
-    // private function setStatusCode(int $statusCode)
-    // {
-    //     if (!$this->checkValidStatusCode()) {
-    //         throw new \InvalidArgumentException(sprintf('The HTTP status code "%s" is inalid.', $statusCode));
-    //     }
+    private function setStatusCode(int $httpCode)
+    {
+        if (!$this->checkValidStatusCode($httpCode)) {
+            throw new \InvalidArgumentException(sprintf('The HTTP status code "%s" is inalid.', $httpCode));
+        }
 
-    //     $this->statusCode = self::statusCodes[$statusCode] ?? 'UNKNOWN_STATUS';
-    // }
+        $this->statusCode = self::statusCodes[$httpCode] ?? 'UNKNOWN_STATUS';
+    }
 
-    // public function getStatusCode()
-    // {
-    //     return $this->statusCode;
-    // }
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
 
-    // /**
-    //  * Checking valid status code
-    //  * 
-    //  * @return bool
-    //  */
-    // private function checkValidStatusCode(): bool
-    // {
-    //     $flag = in_array($this->statusCode, [
-    //         self::HTTP_OK,
-    //         self::HTTP_CREATED,
-    //         self::HTTP_ACCEPTED,
-    //         self::HTTP_NO_CONTENT,
-    //         self::HTTP_BAD_REQUEST,
-    //         self::HTTP_UNAUTHORIZED,
-    //         self::HTTP_FORBIDDEN,
-    //         self::HTTP_NOT_FOUND,
-    //         self::HTTP_CONFLICT,
-    //         self::HTTP_UNPROCESSABLE_ENTITY,
-    //         self::HTTP_RATE_LIMIT,
-    //         self::HTTP_INTERNAL_SERVER_ERROR,
-    //         self::HTTP_SERVICE_UNAVAILABLE,
-    //     ]);
-
-    //     return $flag;
-    // }
+    /**
+     * Checking valid status code
+     * 
+     */
+    private function checkValidStatusCode(int $httpCode)
+    {
+        return in_array($httpCode, [
+            self::HTTP_OK,
+            self::HTTP_CREATED,
+            self::HTTP_ACCEPTED,
+            self::HTTP_NO_CONTENT,
+            self::HTTP_BAD_REQUEST,
+            self::HTTP_UNAUTHORIZED,
+            self::HTTP_FORBIDDEN,
+            self::HTTP_NOT_FOUND,
+            self::HTTP_CONFLICT,
+            self::HTTP_UNPROCESSABLE_ENTITY,
+            self::HTTP_RATE_LIMIT,
+            self::HTTP_INTERNAL_SERVER_ERROR,
+            self::HTTP_SERVICE_UNAVAILABLE,
+        ]);
+    }
 }
