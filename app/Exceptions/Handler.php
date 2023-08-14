@@ -7,6 +7,10 @@ use Throwable;
 use App\Enums\Response;
 use App\Helpers\ResponseJson;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -28,6 +32,22 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (ValidationException $e){
             return ResponseJson::error(Response::HTTP_UNPROCESSABLE_ENTITY, $e->errors());
+        });
+
+        $this->renderable(function (NotFoundHttpException $e){
+            return ResponseJson::error(Response::HTTP_NOT_FOUND);
+        });
+
+        $this->renderable(function (TooManyRequestsHttpException $e){
+            return ResponseJson::error(Response::HTTP_RATE_LIMIT);
+        });
+
+        $this->renderable(function (QueryException $e){
+            return ResponseJson::error(Response::HTTP_SERVICE_UNAVAILABLE, $e->getMessage());
+        });
+
+        $this->renderable(function (AuthenticationException $e) {
+            return ResponseJson::error(Response::HTTP_UNAUTHORIZED);
         });
     }
 }
