@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +17,10 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -22,4 +28,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Register route
 Route::post('/registrations', [RegisterController::class, 'register'])->middleware('throttle:5,1');
 Route::get('/sendVerifyEmail', [RegisterController::class, 'sendVerifyEmail'])->middleware('throttle:1,2');
-Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verifiedEmail'])->name('verification.verify')->middleware('throttle:5,1');;
+Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verifiedEmail'])->name('verification.verify')->middleware('throttle:5,1');
+
+Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1');

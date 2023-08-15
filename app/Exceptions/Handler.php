@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -43,6 +44,10 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (QueryException $e){
             return ResponseJson::error(Response::HTTP_SERVICE_UNAVAILABLE, $e->getMessage());
+        });
+
+        $this->renderable(function (AuthenticationException $e) {
+            return ResponseJson::error(Response::HTTP_UNAUTHORIZED);
         });
     }
 }
